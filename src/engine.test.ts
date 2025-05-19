@@ -121,3 +121,47 @@ test("Should remove lower index values on complete row", () => {
   expect(engine.getBuffers()[1].length()).toBe(1);
   expect(engine.getBuffers()[2].length()).toBe(0);
 });
+
+test("Should find row with delta - last entry in the middle", () => {
+  const onCompleteRow = jest.fn();
+
+  const engine = createTetrisEngine<string>({
+    size: 3,
+    maxBufferSize: 10,
+    maxIndexValueDelta: 5,
+    removeLowerIndexValuesOnCompleteRow: true,
+    onCompleteRow,
+  });
+
+  engine.insert(0, { value: "example1", indexValue: 100 });
+  engine.insert(0, { value: "should-be-removed-1", indexValue: 10 });
+
+  engine.insert(1, { value: "should-be-removed-2", indexValue: 30 });
+  engine.insert(1, { value: "should-not-be-removed-2", indexValue: 204 });
+  engine.insert(1, { value: "example2", indexValue: 104 });
+
+  engine.insert(2, { value: "should-be-removed-3-1", indexValue: 18 });
+  engine.insert(2, { value: "should-be-removed-3-2", indexValue: 44 });
+  engine.insert(2, { value: "example3", indexValue: 102 });
+
+  expect(onCompleteRow).toHaveBeenNthCalledWith(1, [
+    {
+      delta: 2,
+      index: 0,
+      result: { value: "example1", indexValue: 100 },
+    },
+    {
+      delta: 2,
+      index: 1,
+      result: { value: "example2", indexValue: 104 },
+    },
+    {
+      delta: 0,
+      index: 0,
+      result: { value: "example3", indexValue: 102 },
+    },
+  ]);
+  expect(engine.getBuffers()[0].length()).toBe(0);
+  expect(engine.getBuffers()[1].length()).toBe(1);
+  expect(engine.getBuffers()[2].length()).toBe(0);
+});
