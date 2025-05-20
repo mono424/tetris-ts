@@ -16,12 +16,19 @@ When an item is inserted, the engine checks if it completes a "row" with items f
 ## Features
 
 ✨ Manages multiple, independent buffers.
+
 🔢 Items in buffers are ordered on insertion by their `indexValue`.
+
 📐 Configurable maximum buffer size (`maxBufferSize`).
+
 🎯 Detects "complete rows" based on `indexValue` proximity (`maxIndexValueDelta`).
+
 🎣 Callback (`onCompleteRow`) invoked with the aligned items.
+
 🧹 Option to automatically clean up buffers after a row is completed (`removeLowerIndexValuesOnCompleteRow`).
+
 💪 Built with TypeScript, type-safe.
+
 🧪 Includes tests with Jest.
 
 ## Installation
