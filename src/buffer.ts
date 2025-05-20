@@ -16,7 +16,13 @@ export type TetrisBuffer<T> = {
   length: () => number;
 };
 
-export const createTetrisBuffer = <T>(): TetrisBuffer<T> => {
+export interface TetrisBufferOptions {
+  maxSize: number;
+}
+
+export const createTetrisBuffer = <T>(
+  options: TetrisBufferOptions,
+): TetrisBuffer<T> => {
   let array: TetrisBufferEntry<T>[] = [];
 
   const locationOf = (
@@ -39,6 +45,7 @@ export const createTetrisBuffer = <T>(): TetrisBuffer<T> => {
   const insert = (e: TetrisBufferEntry<T>) => {
     const location = locationOf(e.indexValue, 0, array.length);
     array.splice(location, 0, e);
+    while (array.length > options.maxSize) array.pop();
     return location;
   };
 

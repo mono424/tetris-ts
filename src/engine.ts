@@ -28,7 +28,7 @@ export const createTetrisEngine = <T>(
   config: TetrisEngineConfig<T>,
 ): TetrisEngine<T> => {
   let buffers = Array.from({ length: config.size }, () =>
-    createTetrisBuffer<T>(),
+    createTetrisBuffer<T>({ maxSize: config.maxBufferSize }),
   );
 
   const checkCompleteRow = (eIndexValue: number) => {
