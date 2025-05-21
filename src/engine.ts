@@ -1,19 +1,19 @@
 import {
-  createTetrisBuffer,
-  TetrisBuffer,
-  TetrisBufferEntry,
-  TetrisBufferGetResult,
-} from "./buffer";
+  createSortedBuffer,
+  SortedBuffer,
+  SortedBufferEntry,
+  SortedBufferGetResult,
+} from "./sorted-buffer";
 
-export type TetrisBufferRowResult<T> = TetrisBufferGetResult<T>[];
+export type SortedBufferRowResult<T> = SortedBufferGetResult<T>[];
 
 export type TetrisEngineOnCompleteRowHandler<T> = (
-  result: TetrisBufferRowResult<T>,
+  result: SortedBufferRowResult<T>,
 ) => void;
 
 export type TetrisEngine<T> = {
-  insert: (bufferIndex: number, e: TetrisBufferEntry<T>) => number;
-  getBuffers: () => TetrisBuffer<T>[];
+  insert: (bufferIndex: number, e: SortedBufferEntry<T>) => number;
+  getBuffers: () => SortedBuffer<T>[];
 };
 
 export interface TetrisEngineConfig<T> {
@@ -28,11 +28,11 @@ export const createTetrisEngine = <T>(
   config: TetrisEngineConfig<T>,
 ): TetrisEngine<T> => {
   let buffers = Array.from({ length: config.size }, () =>
-    createTetrisBuffer<T>({ maxSize: config.maxBufferSize }),
+    createSortedBuffer<T>({ maxSize: config.maxBufferSize }),
   );
 
   const checkCompleteRow = (eIndexValue: number) => {
-    const rowResult: TetrisBufferRowResult<T> = [];
+    const rowResult: SortedBufferRowResult<T> = [];
     for (const buffer of buffers) {
       const result = buffer.get(eIndexValue, config.maxIndexValueDelta);
       if (!result) {
@@ -49,7 +49,7 @@ export const createTetrisEngine = <T>(
     config.onCompleteRow(rowResult);
   };
 
-  const insert = (bufferIndex: number, e: TetrisBufferEntry<T>) => {
+  const insert = (bufferIndex: number, e: SortedBufferEntry<T>) => {
     const index = buffers[bufferIndex]?.insert(e);
     if (index === undefined) {
       throw new Error("invalid buffer index");

@@ -47,7 +47,7 @@ yarn add @mono424/tetris-ts
 ## Basic Usage
 
 ```typescript
-import { createTetrisEngine, TetrisBufferEntry } from "@mono424/tetris-ts";
+import { createTetrisEngine } from "@mono424/tetris-ts";
 
 // Define the type of items you'll be storing
 type MyDataType = { message: string };
@@ -96,7 +96,7 @@ When you create an engine using `createTetrisEngine<T>(config)`, you can pass th
 - `size: number`: The number of parallel buffers the engine will manage.
 - `maxBufferSize: number`: The maximum number of items that each individual buffer can hold. Once full, older items (those with the lowest `indexValue`) are dropped.
 - `maxIndexValueDelta: number`: When checking for a complete row, this is the maximum absolute difference allowed between the `indexValue` of the triggering item and an item in another buffer for them to be considered part of the same row.
-- `onCompleteRow: (result: TetrisBufferRowResult<T>) => void`: A callback function that gets executed when a complete row is detected. The `result` is an array of objects, each detailing the matched item from a buffer.
+- `onCompleteRow: (result: SortedBufferRowResult<T>) => void`: A callback function that gets executed when a complete row is detected. The `result` is an array of objects, each detailing the matched item from a buffer.
 - `removeLowerIndexValuesOnCompleteRow: boolean`:
   - If `true`, when a row is completed, the matched items and items with `indexValue`s considered "lower" or processed are removed from their respective buffers to free up space and prevent reprocessing. (The exact behavior is to remove the matched item and all items after it in the sorted buffer, effectively clearing items with greater or equal index values from that point).
   - If `false`, only the exact matched items that formed the complete row are removed from their buffers.

@@ -1,2 +1,2 @@
-export * from "./buffer";
+export * from "./sorted-buffer";
 export * from "./engine";
