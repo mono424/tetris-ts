@@ -9,10 +9,14 @@ export interface SortedBufferGetResult<T> {
   index: number;
 }
 
+export interface RemoveResult {
+  count: number;
+}
+
 export type SortedBuffer<T> = {
   insert: (e: SortedBufferEntry<T>) => number;
   get: (indexValue: number, delta: number) => SortedBufferGetResult<T>;
-  remove: (index: number, deleteLowerIndexValues: boolean) => boolean;
+  remove: (index: number, deleteLowerIndexValues: boolean) => RemoveResult;
   length: () => number;
 };
 
@@ -74,12 +78,15 @@ export const createSortedBuffer = <T>(
   const length = () => array.length;
 
   const remove = (index: number, deleteLowerIndexValues: boolean) => {
-    if (deleteLowerIndexValues) {
-      array.splice(index, array.length - index);
-    } else {
-      array.splice(index, 1);
-    }
-    return true;
+    const count = (
+      deleteLowerIndexValues
+        ? array.splice(index, array.length - index)
+        : array.splice(index, 1)
+    ).length;
+
+    return {
+      count,
+    };
   };
 
   return {

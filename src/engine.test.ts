@@ -32,6 +32,9 @@ test("Align perfectly", () => {
       result: { value: "example3", indexValue: 0 },
     },
   ]);
+
+  expect(engine.getState().skipped.total).toBe(0);
+  expect(engine.getState().completed).toBe(1);
 });
 
 test("Aligns perfectly with noise", () => {
@@ -74,6 +77,9 @@ test("Aligns perfectly with noise", () => {
       result: { value: "example3", indexValue: 1 },
     },
   ]);
+
+  expect(engine.getState().skipped.total).toBe(0);
+  expect(engine.getState().completed).toBe(1);
 });
 
 test("Should insert in the correct order", () => {
@@ -153,6 +159,9 @@ test("Should remove lower index values on complete row", () => {
   expect(engine.getBuffers()[0].length()).toBe(0);
   expect(engine.getBuffers()[1].length()).toBe(1);
   expect(engine.getBuffers()[2].length()).toBe(0);
+
+  expect(engine.getState().skipped.total).toBe(4);
+  expect(engine.getState().completed).toBe(1);
 });
 
 test("Should find row with delta - last entry in the middle", () => {
@@ -197,6 +206,9 @@ test("Should find row with delta - last entry in the middle", () => {
   expect(engine.getBuffers()[0].length()).toBe(0);
   expect(engine.getBuffers()[1].length()).toBe(1);
   expect(engine.getBuffers()[2].length()).toBe(0);
+
+  expect(engine.getState().skipped.total).toBe(4);
+  expect(engine.getState().completed).toBe(1);
 });
 
 test("Should find row with delta - last entry at the end", () => {
@@ -241,6 +253,9 @@ test("Should find row with delta - last entry at the end", () => {
   expect(engine.getBuffers()[0].length()).toBe(0);
   expect(engine.getBuffers()[1].length()).toBe(1);
   expect(engine.getBuffers()[2].length()).toBe(0);
+
+  expect(engine.getState().skipped.total).toBe(4);
+  expect(engine.getState().completed).toBe(1);
 });
 
 test("Should find row with delta - last entry at the beginning", () => {
@@ -285,4 +300,7 @@ test("Should find row with delta - last entry at the beginning", () => {
   expect(engine.getBuffers()[0].length()).toBe(0);
   expect(engine.getBuffers()[1].length()).toBe(1);
   expect(engine.getBuffers()[2].length()).toBe(0);
+
+  expect(engine.getState().skipped.total).toBe(4);
+  expect(engine.getState().completed).toBe(1);
 });
